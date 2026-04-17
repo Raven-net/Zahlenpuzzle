@@ -1,0 +1,326 @@
+* {
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: #fff;
+    overflow: hidden;
+}
+
+/* Screens */
+.screen {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.screen.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Start Screen */
+.start-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 50px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.start-card h1 {
+    font-size: 4rem;
+    margin-top: 0;
+    margin-bottom: 10px;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.start-card p {
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+}
+
+.btn-primary {
+    font-family: 'Nunito', sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 15px 50px;
+    border: none;
+    border-radius: 50px;
+    background: #ff7eb3;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(255, 126, 179, 0.4);
+    transition: transform 0.2s, background 0.2s;
+}
+.btn-primary:active {
+    transform: scale(0.95);
+}
+
+/* Game Screen */
+#game-screen {
+    display: flex;
+    flex-direction: row;
+    padding: 30px;
+    gap: 40px;
+}
+
+.left-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 100%;
+}
+
+.right-panel {
+    flex: 0 0 400px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    height: 100%;
+}
+
+.btn-secondary {
+    position: absolute;
+    top: 0; left: 0;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 10px 25px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    background: rgba(0,0,0,0.2);
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+    z-index: 10;
+}
+.btn-secondary:active {
+    background: rgba(255,255,255,0.2);
+}
+
+/* Grid Wrapper & Container */
+#grid-wrapper {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    border-radius: 24px;
+    box-shadow: inset 0 5px 15px rgba(0,0,0,0.3);
+    border: 2px solid rgba(255,255,255,0.1);
+}
+
+#grid-container {
+    display: grid;
+    gap: 4px;
+}
+
+/* Grid Cells */
+.cell {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: 900;
+    color: #fff;
+    border-radius: 8px;
+    position: relative;
+    perspective: 1000px;
+}
+
+.cell-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+}
+
+.cell.flipped .cell-inner {
+    transform: rotateY(180deg);
+}
+
+.cell-front, .cell-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.cell-front {
+    background-color: rgba(255,255,255,0.08);
+}
+
+.cell-back {
+    background-color: #333;
+    transform: rotateY(180deg);
+}
+
+/* Highlight for the NEXT cell target */
+.cell.target .cell-front {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 3px solid #ffeb3b;
+    color: #ffeb3b;
+    font-size: 28px;
+    box-shadow: 0 0 15px rgba(255, 235, 59, 0.6), inset 0 0 10px rgba(255, 235, 59, 0.4);
+    animation: pulseTarget 1.5s infinite;
+}
+
+@keyframes pulseTarget {
+    0% { transform: scale(1); box-shadow: 0 0 10px rgba(255,235,59,0.5); }
+    50% { transform: scale(1.1); box-shadow: 0 0 25px rgba(255,235,59,0.9); }
+    100% { transform: scale(1); box-shadow: 0 0 10px rgba(255,235,59,0.5); }
+}
+
+/* Numpad Area */
+.right-panel h2 {
+    font-size: 1.8rem;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 30px;
+    line-height: 1.4;
+}
+
+.highlight-q {
+    color: #ffeb3b;
+    background: rgba(0,0,0,0.3);
+    padding: 4px 12px;
+    border-radius: 8px;
+    display: inline-block;
+    animation: gentlePulse 2s infinite;
+}
+
+@keyframes gentlePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.numpad-container {
+    width: 100%;
+}
+
+#numpad-display {
+    width: 100%;
+    height: 80px;
+    background: rgba(0,0,0,0.4);
+    border-radius: 16px;
+    margin-bottom: 25px;
+    font-size: 3rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    letter-spacing: 5px;
+    border: 2px solid rgba(255,255,255,0.2);
+    transition: all 0.3s ease;
+    box-shadow: inset 0 5px 10px rgba(0,0,0,0.5);
+}
+
+#numpad-display.correct {
+    background: rgba(76, 175, 80, 0.9);
+    border-color: #4caf50;
+    box-shadow: 0 0 30px #4caf50;
+    transform: scale(1.05);
+}
+
+#numpad-display.wrong {
+    background: rgba(244, 67, 54, 0.9);
+    border-color: #f44336;
+    box-shadow: 0 0 30px #f44336;
+    animation: shake 0.4s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-15px); }
+    40%, 80% { transform: translateX(15px); }
+}
+
+.numpad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.numpad button {
+    font-family: 'Nunito', sans-serif;
+    font-size: 2.2rem;
+    font-weight: bold;
+    height: 80px;
+    border-radius: 16px;
+    border: none;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    transition: background 0.1s, transform 0.1s;
+    backdrop-filter: blur(5px);
+}
+
+.numpad button:active {
+    background: rgba(255,255,255,0.3);
+    transform: translateY(3px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.action-key.clr {
+    background: rgba(244, 67, 54, 0.6);
+    font-size: 1.8rem;
+}
+.action-key.submit {
+    background: rgba(76, 175, 80, 0.6);
+}
+
+.action-key.clr:active { background: rgba(244, 67, 54, 0.8); }
+.action-key.submit:active { background: rgba(76, 175, 80, 0.8); }
+
+/* Colors basierend auf dem Bild */
+.zahl-1 { background-color: #4a4ae6 !important; }
+.zahl-2 { background-color: #4ac1e6 !important; }
+.zahl-3 { background-color: #4ae6c1 !important; }
+.zahl-4 { background-color: #4ae67b !important; }
+.zahl-5 { background-color: #7be64a !important; }
+.zahl-6 { background-color: #c1e64a !important; }
+.zahl-7 { background-color: #e6c14a !important; }
+.zahl-8 { background-color: #e67b4a !important; }
+.zahl-9 { background-color: #e64a4a !important; }
+.zahl-10 { background-color: purple !important; }
+.zahl-11 { background-color: darkgreen !important; }
+.zahl-12 { background-color: pink !important; }

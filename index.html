@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Zahlen-Spirale Puzzle</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Start Screen -->
+    <div id="start-screen" class="screen active">
+        <div class="start-card">
+            <h1>Zahlenpuzzle</h1>
+            <p>Kannst du das versteckte Muster erkennen?</p>
+            <button id="btn-start" class="btn-primary">Spielen</button>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen">
+        <div class="left-panel">
+            <button id="btn-exit" class="btn-secondary">Beenden</button>
+            <div id="grid-wrapper">
+                <div id="grid-container"></div>
+            </div>
+        </div>
+        
+        <div class="right-panel">
+            <h2>Welche Zahl kommt als Nächstes ins <span class="highlight-q">?</span> Feld?</h2>
+            
+            <div class="numpad-container">
+                <div id="numpad-display"></div>
+                <div class="numpad">
+                    <button class="num-key">1</button>
+                    <button class="num-key">2</button>
+                    <button class="num-key">3</button>
+                    <button class="num-key">4</button>
+                    <button class="num-key">5</button>
+                    <button class="num-key">6</button>
+                    <button class="num-key">7</button>
+                    <button class="num-key">8</button>
+                    <button class="num-key">9</button>
+                    <button id="btn-del" class="action-key clr">⌫</button>
+                    <button class="num-key">0</button>
+                    <button id="btn-check" class="action-key submit">✓</button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
